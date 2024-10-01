@@ -1,5 +1,5 @@
 export default function App() {
   return (
-    <div>App</div>
+    <div>Hello from the app staging</div>
   )
 }
