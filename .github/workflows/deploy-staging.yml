@@ -15,10 +15,11 @@ jobs:
       - name: Checkout Staging branch
         uses: actions/checkout@v4
       
-      - name: Setup Nodejs
-        run:
-          npm install -g pnpm@latest
-          pnpm install
+      - name: Install pnpm
+        run: npm install -g pnpm@latest
+         
+      - name: Install Depedencies
+        run: pnpm install
         
       - name: Check Code Linter
         run: pnpm lint
