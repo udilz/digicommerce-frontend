@@ -12,8 +12,8 @@ jobs:
       - name: Logging
         run: echo "Start to deploy Staging"
       
-      - name: Checkout Staging branches
-        uses: actions/checkout@v3
+      - name: Checkout Staging branch
+        uses: actions/checkout@v4
       
       - name: Setup Nodejs
         run: 
