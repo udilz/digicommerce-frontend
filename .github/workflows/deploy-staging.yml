@@ -25,11 +25,11 @@ jobs:
         run: pnpm lint
       
       - name: Build Docker Image
-        run: docker build -t udilz/digicommerce-fe .
+        run: docker build -t uudilz/digicommerce-fe .
       
       - name: Login to Docker HUB
         run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
       
       - name: Push Docker Image to HUB
-        run: docker push udilz/digicommerce-fe
+        run: docker push uudilz/digicommerce-fe
 
