@@ -46,4 +46,9 @@ jobs:
 
       - name: Add Server to Known Hosts
         run: ssh-keyscan -H ${{ secrets.FRONTEND_SERVER_IP }} >> ~/.ssh/known_hosts
+      
+      - name: Deploy to Server
+        run: |
+          ssh ${{ secrets.FRONTEND_SERVER_USER }}@${{ secrets.FRONTEND_SERVER_IP }} "
+            docker pull uudilz/digicommerce-fe"
 
