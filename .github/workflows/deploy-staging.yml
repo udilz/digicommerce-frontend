@@ -33,13 +33,17 @@ jobs:
       - name: Push Docker Image to HUB
         run: docker push uudilz/digicommerce-fe
       
-      - name: Setup SSH to Server
-        run: 
-          mkdir -p ~/.ssh
-          echo "$SSH_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.FRONTEND_SERVER_IP }} >> ~/.ssh/known_hosts
-        
+      - name: Create .ssh Directory
+        run: mkdir -p ~/.ssh
+
+      - name: Add SSH Private Key
+        run: echo "$SSH_KEY" > ~/.ssh/id_rsa
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
+
+      - name: Set Correct Permissions for Private Key
+        run: chmod 600 ~/.ssh/id_rsa
+
+      - name: Add Server to Known Hosts
+        run: ssh-keyscan -H ${{ secrets.FRONTEND_SERVER_IP }} >> ~/.ssh/known_hosts
 
