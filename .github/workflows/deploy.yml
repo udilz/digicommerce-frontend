@@ -10,4 +10,48 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Logging
-        run: echo "Frontend Deployed!!"
+        run: echo "Start to deploy Production..."
+      
+      - name: Checkout Production 
+        uses: actions/checkout@v4
+      
+      - name: Install pnpm
+        run: npm install -g pnpm@latest
+         
+      - name: Install Depedencies
+        run: pnpm install
+        
+      - name: Check Code Linter
+        run: pnpm lint
+      
+      - name: Build Docker Image
+        run: docker build -t uudilz/digicommerce-fe .
+      
+      - name: Login to Docker HUB
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+      
+      - name: Push Docker Image to HUB
+        run: docker push uudilz/digicommerce-fe
+      
+      - name: Create .ssh Directory
+        run: mkdir -p ~/.ssh
+
+      - name: Add SSH Private Key
+        run: echo "$SSH_KEY" > ~/.ssh/id_rsa
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+
+      - name: Set Correct Permissions for Private Key
+        run: chmod 600 ~/.ssh/id_rsa
+
+      - name: Add Server to Known Hosts
+        run: ssh-keyscan -H ${{ secrets.FRONTEND_SERVER_IP }} >> ~/.ssh/known_hosts
+      
+      - name: Deploy to Server
+        run: |
+          ssh ${{ secrets.FRONTEND_SERVER_USER }}@${{ secrets.FRONTEND_SERVER_IP }} "
+            docker pull uudilz/digicommerce-fe
+            docker stop digicommerce-fe
+            docker rm digicommerce-fe
+            docker run -d --name digicommerce-fe -p 4173:4173 uudilz/digicommerce-fe"
+
