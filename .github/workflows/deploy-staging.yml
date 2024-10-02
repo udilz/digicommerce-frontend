@@ -50,5 +50,8 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh ${{ secrets.FRONTEND_SERVER_USER }}@${{ secrets.FRONTEND_SERVER_IP }} "
-            docker pull uudilz/digicommerce-fe"
+            docker pull uudilz/digicommerce-fe
+            docker stop digicommerce-fe
+            docker rm digicommerce-fe
+            docker run -d --name digicommerce-fe -p 4173:4173 uudilz/digicommerce-fe"
 
